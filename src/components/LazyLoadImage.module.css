@@ -1,0 +1,12 @@
+.lazyImage {
+  position: absolute;
+  left: -1%;
+  transform: translateX(-100%);
+  transition: left 10s linear, transform 10s linear;
+  width: 200px;
+}
+
+.started {
+  left: 105%;
+  transform: translateX(100%);
+}
