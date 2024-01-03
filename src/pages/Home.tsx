@@ -2,6 +2,7 @@ import { useState } from "react";
 // import "./Home.css";
 import classes from "./Home.module.css";
 import LazyLoadImage from "@components/LazyLoadImage";
+import { v4 as uuid } from "uuid";
 
 function Home() {
   const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
@@ -38,19 +39,36 @@ function Home() {
 
   const [counter, setCounter] = useState(0);
 
-  const [displaying, setDisplaying] = useState<string[]>([]);
+  const [displaying, setDisplaying] = useState<{ key: string; id: string }[]>(
+    []
+  );
 
   const addToDisplay = () => {
     if (imageKeys.length === 0) return;
 
     const nextCounter = counter >= imageKeys.length - 1 ? 0 : counter + 1;
     setCounter(nextCounter);
-    setDisplaying([...displaying, imageKeys[nextCounter]]);
+    setDisplaying([
+      ...displaying,
+      {
+        key: imageKeys[nextCounter],
+        id: uuid(),
+      },
+    ]);
   };
 
-  const removeFromDisplay = (key: string) =>
-    setDisplaying((prev) => prev.filter((x) => x !== key));
+  const removeFromDisplay = (id: string) =>
+    setDisplaying((prev) => prev.filter((img) => img.id !== id));
 
+  /*
+  Having an issue where the .filter is probably running once or something?
+  Basically the images just sit on the right-hand side when there is a deluge of images.
+  obviosuly in production there wont be so many, but its still something i want
+  to address.
+
+  is it an issue where the image....... why would it be occurring?
+  
+  */
   return (
     <>
       <div className={classes.options}>
@@ -68,14 +86,13 @@ function Home() {
       </div>
       <div className={classes.bigBox}>
         {displaying.length > 0 &&
-          displaying.map((objectKey) => {
+          displaying.map(({ key, id }) => {
             return (
               <LazyLoadImage
-                key={objectKey}
-                objectKey={objectKey}
-                notifyCompletion={(key: string) => removeFromDisplay(key)}
-                src={createFullUrl(objectKey)}
-                alt="foo"
+                key={id}
+                notifyCompletion={() => removeFromDisplay(id)}
+                src={createFullUrl(key)}
+                alt="Party Time"
               />
             );
           })}

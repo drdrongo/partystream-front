@@ -3,11 +3,10 @@ import classes from "./LazyLoadImage.module.css";
 
 interface Props {
   src: string;
-  objectKey: string;
   alt: string;
-  notifyCompletion: (key: string) => void;
+  notifyCompletion: () => void;
 }
-const LazyLoadImage = ({ src, objectKey, alt, notifyCompletion }: Props) => {
+const LazyLoadImage = ({ src, alt, notifyCompletion }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -17,11 +16,6 @@ const LazyLoadImage = ({ src, objectKey, alt, notifyCompletion }: Props) => {
   const finishedRef = useRef(false);
 
   const [topOffset, setTopOffset] = useState("0%");
-
-  // const topOffset = `${Math.floor(Math.random() * 100)}% - ${
-  //   imageRef.current?.clientHeight || 0
-  // }px`;
-  // const topOffset = `${Math.floor(Math.random() * 100)}%`;
 
   useEffect(() => {
     if (hasBeenVisible) {
@@ -80,11 +74,9 @@ const LazyLoadImage = ({ src, objectKey, alt, notifyCompletion }: Props) => {
 
   useEffect(() => {
     if (finished) {
-      notifyCompletion(objectKey);
+      notifyCompletion();
     }
   }, [finished]);
-
-  console.log(topOffset);
 
   return (
     <img
