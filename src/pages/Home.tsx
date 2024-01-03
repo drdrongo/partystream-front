@@ -60,15 +60,6 @@ function Home() {
   const removeFromDisplay = (id: string) =>
     setDisplaying((prev) => prev.filter((img) => img.id !== id));
 
-  /*
-  Having an issue where the .filter is probably running once or something?
-  Basically the images just sit on the right-hand side when there is a deluge of images.
-  obviosuly in production there wont be so many, but its still something i want
-  to address.
-
-  is it an issue where the image....... why would it be occurring?
-  
-  */
   return (
     <>
       <div className={classes.options}>
