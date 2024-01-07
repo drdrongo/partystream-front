@@ -42,6 +42,10 @@ export default defineConfig({
         find: "@enums",
         replacement: fileURLToPath(new URL("./src/enums", import.meta.url)),
       },
+      {
+        find: "@hooks",
+        replacement: fileURLToPath(new URL("./src/hooks", import.meta.url)),
+      },
     ],
   },
 });
