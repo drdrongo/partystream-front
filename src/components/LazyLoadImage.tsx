@@ -6,6 +6,8 @@ interface Props {
   alt: string;
   notifyCompletion: () => void;
 }
+
+// TODO: Rename this
 const LazyLoadImage = ({ src, alt, notifyCompletion }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
@@ -38,7 +40,7 @@ const LazyLoadImage = ({ src, alt, notifyCompletion }: Props) => {
         const { clientHeight } = imageRef.current;
         setTopOffset(`max(calc(${randomTopPercent}% - ${clientHeight}px), 0%)`);
       }
-    }, 1000);
+    }, 2500);
   }, []);
 
   useEffect(() => {
@@ -82,7 +84,6 @@ const LazyLoadImage = ({ src, alt, notifyCompletion }: Props) => {
     <img
       className={`${classes.lazyImage} ${started ? classes.started : ""}`}
       ref={imageRef}
-      // loading="lazy"
       src={src}
       alt={alt}
       style={{ top: topOffset }}

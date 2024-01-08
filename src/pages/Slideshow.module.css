@@ -1,0 +1,30 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+} */
+
+.bigBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid pink;
+  overflow-y: hidden;
+  overflow-x: auto;
+  display: flex;
+}
+
+.options {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid grey;
+  padding: 8px;
+  border-radius: 4px;
+  z-index: 2;
+}

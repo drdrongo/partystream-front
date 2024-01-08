@@ -1,94 +1,67 @@
-import { useState } from "react";
-// import "./Home.css";
 import classes from "./Home.module.css";
-import LazyLoadImage from "@components/LazyLoadImage";
-import { v4 as uuid } from "uuid";
+
+const pic1 =
+  "https://partystream-1.s3.ap-northeast-1.amazonaws.com/dev/5c0c56bd-6a21-4bf8-b81e-9c24ed76b938.jpg";
+const pic2 =
+  "https://partystream-1.s3.ap-northeast-1.amazonaws.com/dev/2fe74f51-6334-406d-a375-2f61a66402a5.jpeg";
+const pic3 =
+  "https://partystream-1.s3.ap-northeast-1.amazonaws.com/dev/2fe74f51-6334-406d-a375-2f61a66402a5.jpeg";
 
 function Home() {
-  const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
-  const region = import.meta.env.VITE_AWS_REGION;
-
-  // Construct the S3 URL
-  const createFullUrl = (key: string): string =>
-    `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
-
-  const [imageKeys, setImageKeys] = useState<string[]>([]);
-
-  const getImageKeys = async (): Promise<string[]> => {
-    try {
-      const api = "images/list";
-      const backendUrl = new URL(api, import.meta.env.VITE_BASE_URL);
-      const data: string[] = await fetch(backendUrl).then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        return response.json();
-      });
-      return data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-
-  const handleImageKeys = async () => {
-    const data = await getImageKeys();
-    setImageKeys(data);
-  };
-
-  const [counter, setCounter] = useState(0);
-
-  const [displaying, setDisplaying] = useState<{ key: string; id: string }[]>(
-    []
-  );
-
-  const addToDisplay = () => {
-    if (imageKeys.length === 0) return;
-
-    const nextCounter = counter >= imageKeys.length - 1 ? 0 : counter + 1;
-    setCounter(nextCounter);
-    setDisplaying([
-      ...displaying,
-      {
-        key: imageKeys[nextCounter],
-        id: uuid(),
-      },
-    ]);
-  };
-
-  const removeFromDisplay = (id: string) =>
-    setDisplaying((prev) => prev.filter((img) => img.id !== id));
+  const pics = [pic1, pic2, pic3];
+  const randomPlacements = [
+    [
+      { x: 5, y: 10 },
+      { x: 9, y: 15 },
+      { x: 0, y: -10 },
+    ],
+    [
+      { x: 8, y: 0 },
+      { x: -1, y: 8 },
+      { x: -3, y: -5 },
+    ],
+  ];
 
   return (
-    <>
-      <div className={classes.options}>
-        <button
-          disabled={imageKeys.length > 0}
-          onClick={handleImageKeys}
-          type="button"
-        >
-          Get Image Keys
-        </button>
-        <button disabled={imageKeys.length === 0} onClick={addToDisplay}>
-          Add
-        </button>
-        <h5>Displaying Length: {displaying.length}</h5>
-      </div>
-      <div className={classes.bigBox}>
-        {displaying.length > 0 &&
-          displaying.map(({ key, id }) => {
-            return (
-              <LazyLoadImage
-                key={id}
-                notifyCompletion={() => removeFromDisplay(id)}
-                src={createFullUrl(key)}
-                alt="Party Time"
+    <div className={classes.main}>
+      <div className={classes.column3}>
+        {pics.map((pic, idx) => {
+          const styles = randomPlacements[0][idx];
+          return (
+            <div className={classes.columnRow}>
+              <img
+                key={pic}
+                className={classes.image}
+                style={{
+                  transform: `translate(${styles.x}%, ${styles.y}%)`,
+                }}
+                src={pic}
+                alt="foo"
               />
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
-    </>
+
+      <div className={classes.column3}>
+        {pics.map((pic, idx) => {
+          const styles = randomPlacements[1][idx];
+          return (
+            <div className={classes.columnRow}>
+              <img
+                key={pic}
+                className={classes.image}
+                style={{
+                  transform: `translate(${styles.x}%, ${styles.y}%)`,
+                }}
+                src={pic}
+                alt="foo"
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
