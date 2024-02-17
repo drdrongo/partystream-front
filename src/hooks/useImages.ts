@@ -15,6 +15,8 @@ const useImages = () => {
     refetchInterval: 10_000,
   });
 
+  console.log({ data });
+
   // if (isLoading) return "Loading...";
 
   // if (error) return "An error has occurred: " + error.message;
